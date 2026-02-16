@@ -1,0 +1,15 @@
+﻿<h2>Proyectos pendientes</h2>
+
+<section class="list">
+  <mat-card *ngFor="let project of projects">
+    <h3>{{ project.titulo }}</h3>
+    <p><strong>Alumno:</strong> {{ project.autor }} ({{ project.autor_email }})</p>
+    <p><strong>Ciclo:</strong> {{ project.ciclo }} | <strong>Curso:</strong> {{ project.curso_academico }}</p>
+    <p>{{ project.descripcion }}</p>
+    <button mat-raised-button color="primary" (click)="publish(project.id)">
+      Publicar
+    </button>
+  </mat-card>
+
+  <mat-card *ngIf="projects.length === 0">No hay proyectos pendientes.</mat-card>
+</section>

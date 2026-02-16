@@ -1,0 +1,66 @@
+﻿<mat-card>
+  <h2>Crear proyecto</h2>
+
+  <form [formGroup]="form" class="form-grid" (ngSubmit)="createProject()">
+    <mat-form-field appearance="outline">
+      <mat-label>Titulo</mat-label>
+      <input matInput formControlName="titulo" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ciclo</mat-label>
+      <mat-select formControlName="ciclo">
+        <mat-option value="DAM">DAM</mat-option>
+        <mat-option value="ASIR">ASIR</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Curso academico</mat-label>
+      <input matInput formControlName="curso_academico" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="wide">
+      <mat-label>Descripcion</mat-label>
+      <textarea matInput rows="3" formControlName="descripcion"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="wide">
+      <mat-label>Tecnologias</mat-label>
+      <input matInput formControlName="tecnologias" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="wide">
+      <mat-label>Repositorio URL</mat-label>
+      <input matInput formControlName="repositorio_url" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="wide">
+      <mat-label>Demo URL (opcional)</mat-label>
+      <input matInput formControlName="demo_url" />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+      Crear borrador
+    </button>
+  </form>
+</mat-card>
+
+<section class="list">
+  <mat-card *ngFor="let project of projects">
+    <h3>{{ project.titulo }}</h3>
+    <p><strong>Estado:</strong> {{ project.estado }}</p>
+    <p>{{ project.descripcion }}</p>
+    <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+    <button
+      mat-stroked-button
+      color="primary"
+      *ngIf="project.estado === 'BORRADOR'"
+      (click)="submitToReview(project.id)"
+    >
+      Enviar a revision
+    </button>
+  </mat-card>
+
+  <mat-card *ngIf="projects.length === 0">Aun no tienes proyectos.</mat-card>
+</section>

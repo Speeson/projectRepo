@@ -1,0 +1,33 @@
+﻿<mat-toolbar color="primary" class="topbar">
+  <span class="brand" routerLink="/public">FP RepoProjects</span>
+
+  <a mat-button routerLink="/public" routerLinkActive="active-link">Publicos</a>
+  <a
+    mat-button
+    *ngIf="isAlumno()"
+    routerLink="/my-projects"
+    routerLinkActive="active-link"
+  >
+    Mis proyectos
+  </a>
+  <a
+    mat-button
+    *ngIf="isReviewer()"
+    routerLink="/pending"
+    routerLinkActive="active-link"
+  >
+    Pendientes
+  </a>
+
+  <span class="spacer"></span>
+
+  <a mat-button *ngIf="!currentUser()" routerLink="/login">Login</a>
+  <span class="user-chip" *ngIf="currentUser()">
+    {{ currentUser()?.email }} ({{ currentUser()?.role }})
+  </span>
+  <button mat-button *ngIf="currentUser()" (click)="logout()">Salir</button>
+</mat-toolbar>
+
+<main class="page">
+  <router-outlet></router-outlet>
+</main>

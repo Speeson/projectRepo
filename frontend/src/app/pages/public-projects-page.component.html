@@ -1,0 +1,51 @@
+﻿<section class="filters">
+  <mat-card>
+    <h2>Proyectos publicados</h2>
+
+    <form [formGroup]="form" class="filters-grid" (ngSubmit)="load()">
+      <mat-form-field appearance="outline">
+        <mat-label>Ciclo</mat-label>
+        <mat-select formControlName="ciclo">
+          <mat-option value="">Todos</mat-option>
+          <mat-option value="DAM">DAM</mat-option>
+          <mat-option value="ASIR">ASIR</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Curso academico</mat-label>
+        <input matInput formControlName="curso_academico" placeholder="2025-2026" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Texto</mat-label>
+        <input matInput formControlName="q" placeholder="Angular, monitorizacion..." />
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+          Filtrar
+        </button>
+        <button mat-button type="button" (click)="clearFilters()">Limpiar</button>
+      </div>
+    </form>
+  </mat-card>
+</section>
+
+<section class="list">
+  <mat-card *ngFor="let project of projects" class="project-card">
+    <h3>{{ project.titulo }}</h3>
+    <p>{{ project.descripcion }}</p>
+    <p><strong>Ciclo:</strong> {{ project.ciclo }} | <strong>Curso:</strong> {{ project.curso_academico }}</p>
+    <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+    <p><strong>Autor:</strong> {{ project.autor }}</p>
+    <p>
+      <a [href]="project.repositorio_url" target="_blank" rel="noreferrer">Repositorio</a>
+      <span *ngIf="project.demo_url"> | <a [href]="project.demo_url" target="_blank" rel="noreferrer">Demo</a></span>
+    </p>
+  </mat-card>
+
+  <mat-card *ngIf="!loading && projects.length === 0">
+    No hay proyectos con los filtros actuales.
+  </mat-card>
+</section>

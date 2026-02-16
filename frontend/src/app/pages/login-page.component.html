@@ -1,0 +1,21 @@
+﻿<mat-card class="card">
+  <h2>Iniciar sesion</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" />
+    </mat-form-field>
+
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Entrando...' : 'Entrar' }}
+    </button>
+  </form>
+</mat-card>

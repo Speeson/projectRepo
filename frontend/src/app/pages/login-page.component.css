@@ -1,0 +1,14 @@
+﻿.card {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.error {
+  color: #b00020;
+  margin: 0;
+}
