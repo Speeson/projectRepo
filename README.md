@@ -19,7 +19,7 @@ Flujo minimo obligatorio:
 - Node.js LTS
 - npm
 - Angular CLI
-- MySQL Server 8+
+- MySQL 8+ o MariaDB compatible
 - Git
 - VS Code
 
@@ -44,6 +44,9 @@ Scripts disponibles:
 - `db/schema.sql`
 - `db/seed.sql`
 
+Base de datos objetivo:
+- `repoprojects_db`
+
 ### Tablas actuales
 - `usuarios`
 - `proyectos`
@@ -60,9 +63,13 @@ Scripts disponibles:
 - `RECHAZADO`
 
 ### Carga local
-1. Ejecutar `db/schema.sql`.
-2. Ejecutar `db/seed.sql`.
-3. Verificar que el backend usa `DB_NAME=repoprojects_db`.
+1. Ejecutar schema en MySQL (puerto 3307):
+   - `Get-Content .\db\schema.sql -Raw | mysql -h 127.0.0.1 -P 3307 -u root -p`
+2. Ejecutar seed:
+   - `Get-Content .\db\seed.sql -Raw | mysql -h 127.0.0.1 -P 3307 -u root -p`
+3. Verificar tablas:
+   - `mysql -h 127.0.0.1 -P 3307 -u root -p -D repoprojects_db -e "SHOW TABLES;"`
+4. Verificar que backend usa `DB_PORT=3307` y `DB_NAME=repoprojects_db`.
 
 Credenciales de prueba (seed):
 - `alumno@repoprojects.local`
@@ -108,14 +115,15 @@ Filtros minimos del listado publico:
 
 ## 9. Como ejecutar
 ### Base de datos
-1. Crear/actualizar esquema ejecutando `db/schema.sql`.
-2. Poblar datos con `db/seed.sql`.
+Desde la raiz del repo:
+1. `Get-Content .\db\schema.sql -Raw | mysql -h 127.0.0.1 -P 3307 -u root -p`
+2. `Get-Content .\db\seed.sql -Raw | mysql -h 127.0.0.1 -P 3307 -u root -p`
 
 ### Backend
 1. Ir a `backend/`.
 2. Instalar dependencias: `npm install`.
 3. Copiar variables: `cp .env.example .env` (en Windows PowerShell: `Copy-Item .env.example .env`).
-4. Ajustar credenciales MySQL en `.env`.
+4. Ajustar credenciales MySQL en `.env` (`DB_HOST`, `DB_PORT=3307`, `DB_USER`, `DB_PASSWORD`, `DB_NAME=repoprojects_db`).
 5. Levantar API: `npm run dev`.
 
 Backend implementado actualmente:
@@ -151,6 +159,7 @@ Frontend implementado actualmente:
 - 2026-02-16: Implementados endpoints de moderacion (`GET /projects/pending`, `PATCH /projects/:id/publish`).
 - 2026-02-16: Inicializado frontend Angular + Material e integradas pantallas MVP.
 - 2026-02-16: Ejecutada QA manual E2E y cerrada documentacion final.
+- 2026-02-17: Migracion de BD al esquema `usuarios/proyectos` (`repoprojects_db`) y actualizacion de seed/backend.
 
 ## 11. Demo rapida (checklist)
 1. Login como `ALUMNO` y crear proyecto en `BORRADOR`.
