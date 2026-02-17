@@ -3,7 +3,6 @@ name: Docker Images
 on:
   push:
     branches:
-      - main
       - dev
   workflow_dispatch:
 

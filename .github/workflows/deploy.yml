@@ -8,6 +8,9 @@ on:
 
 jobs:
   deploy-local:
+    environment:
+      name: local-deploy
+      url: ${{ vars.APP_URL || 'http://localhost:8080' }}
     runs-on:
       - self-hosted
       - Windows
@@ -21,3 +24,10 @@ jobs:
         run: |
           docker compose up -d --build --remove-orphans
           docker compose ps
+
+      - name: Publish deployment links
+        shell: powershell
+        run: |
+          $appUrl = "${{ vars.APP_URL || 'http://localhost:8080' }}"
+          "App URL: $appUrl" >> $env:GITHUB_STEP_SUMMARY
+          "API Health: $appUrl/api/health" >> $env:GITHUB_STEP_SUMMARY

@@ -198,7 +198,7 @@ Workflow incluido:
 - `.github/workflows/deploy.yml`
 
 Que hace:
-1. Se ejecuta en `push` a `main` o `dev` (y manual con `workflow_dispatch`).
+1. Se ejecuta en `push` a `dev` (y manual con `workflow_dispatch`).
 2. Construye y publica imagenes de `backend` y `frontend` en GHCR.
 3. Etiquetas generadas: `sha`, nombre de rama y `latest` en la rama por defecto.
 
@@ -219,3 +219,4 @@ Deploy automatico en Windows (self-hosted runner):
 Requisitos:
 - Tener el runner de GitHub Actions levantado (`run.cmd` o servicio).
 - Docker Desktop funcionando en la maquina del runner.
+- Opcional: definir `Repository Variable` llamada `APP_URL` para que el enlace del environment apunte a tu URL publica.
