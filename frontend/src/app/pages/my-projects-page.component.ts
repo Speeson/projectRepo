@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,9 +27,11 @@ import type { MyProject } from '../core/models';
 })
 export class MyProjectsPageComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
-  projects: MyProject[] = [];
-  loading = false;
-  errorMessage = '';
+  readonly projects = signal<MyProject[]>([]);
+  readonly showProjects = signal(false);
+  readonly loading = signal(false);
+  readonly errorMessage = signal('');
+  readonly successMessage = signal('');
 
   readonly form = this.fb.group({
     titulo: ['', Validators.required],
@@ -44,34 +46,55 @@ export class MyProjectsPageComponent implements OnInit {
   constructor(private readonly projectService: ProjectService) {}
 
   ngOnInit(): void {
+    this.projects.set([]);
+  }
+
+  showMyProjects(): void {
+    this.successMessage.set('');
+    this.showProjects.set(true);
     this.loadMine();
   }
 
+  hideMyProjects(): void {
+    this.showProjects.set(false);
+  }
+
   loadMine(): void {
-    this.errorMessage = '';
+    this.errorMessage.set('');
 
     this.projectService
       .getMyProjects()
       .pipe(timeout(8000))
       .subscribe({
         next: (response) => {
-          this.projects = response.items;
+          this.projects.set(response.items);
         },
         error: () => {
-          this.projects = [];
-          this.errorMessage =
-            'No se pudo cargar el listado. Revisa que el backend este activo e intentalo de nuevo.';
+          this.projects.set([]);
+          this.errorMessage.set(
+            'No se pudo cargar el listado. Revisa que el backend este activo e intentalo de nuevo.'
+          );
         }
       });
   }
 
   createProject(): void {
-    if (this.form.invalid || this.loading) {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.successMessage.set('');
+      this.errorMessage.set(
+        'Completa todos los campos obligatorios (titulo, descripcion, ciclo, curso, tecnologias y repositorio).'
+      );
       return;
     }
 
-    this.loading = true;
-    this.errorMessage = '';
+    if (this.loading()) {
+      return;
+    }
+
+    this.loading.set(true);
+    this.successMessage.set('');
+    this.errorMessage.set('');
     const input = this.form.getRawValue();
 
     this.projectService
@@ -87,7 +110,7 @@ export class MyProjectsPageComponent implements OnInit {
       .pipe(
         timeout(8000),
         finalize(() => {
-          this.loading = false;
+          this.loading.set(false);
         })
       )
       .subscribe({
@@ -99,28 +122,41 @@ export class MyProjectsPageComponent implements OnInit {
             repositorio_url: '',
             demo_url: ''
           });
+          this.setSuccessMessage('Proyecto creado en BORRADOR correctamente.');
+          this.showProjects.set(true);
           this.loadMine();
         },
         error: () => {
-          this.errorMessage =
-            'No se pudo crear el proyecto. Revisa la conexion con el backend e intentalo de nuevo.';
+          this.errorMessage.set(
+            'No se pudo crear el proyecto. Revisa la conexion con el backend e intentalo de nuevo.'
+          );
         }
       });
   }
 
   submitToReview(projectId: number): void {
-    this.errorMessage = '';
+    this.successMessage.set('');
+    this.errorMessage.set('');
 
     this.projectService
       .submitProject(projectId)
       .pipe(timeout(8000))
       .subscribe({
-        next: () => this.loadMine(),
+        next: () => {
+          this.setSuccessMessage('Proyecto enviado a revision (PENDIENTE).');
+          this.loadMine();
+        },
         error: () => {
-          this.errorMessage =
-            'No se pudo enviar a revision. Revisa la conexion con el backend e intentalo de nuevo.';
+          this.errorMessage.set(
+            'No se pudo enviar a revision. Revisa la conexion con el backend e intentalo de nuevo.'
+          );
           this.loadMine();
         }
       });
+  }
+
+  private setSuccessMessage(message: string): void {
+    this.successMessage.set(message);
+    setTimeout(() => this.successMessage.set(''), 3500);
   }
 }

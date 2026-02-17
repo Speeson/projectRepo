@@ -1,51 +1,163 @@
-.create-card {
-  margin-bottom: 16px;
+﻿.creator-card {
+  margin-bottom: 18px;
+  padding: 14px 14px 12px;
+  position: relative;
+  overflow: hidden;
+  border-top: 5px solid #2b79da;
 }
 
+.creator-card::before {
+  content: '';
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  right: -120px;
+  top: -140px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(60, 146, 255, 0.2) 0%, rgba(60, 146, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.creator-header,
 .form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  position: relative;
+  z-index: 1;
 }
 
-.wide {
-  grid-column: 1 / -1;
-}
-
-.create-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: center;
-}
-
-.page-error {
-  margin: 8px 2px 2px;
-  color: #a30000;
-  font-weight: 500;
-  font-size: 0.92rem;
-}
-
-.list {
-  margin-top: 16px;
-  display: grid;
-  gap: 12px;
-}
-
-.project-card {
-  border-left: 6px solid #1565c0;
-  margin: 12px 10px;
-  padding: 8px;
-}
-
-.card-head {
+.header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
 }
 
+.section-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #104886;
+  background: #dff0ff;
+  border: 1px solid #c0dcff;
+}
+
+.results-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: #2c4f76;
+  background: #ecf5ff;
+  border: 1px solid #d1e5ff;
+}
+
+.creator-header h2 {
+  margin: 10px 0 0;
+  font-size: 1.4rem;
+}
+
+.creator-header p {
+  margin: 9px 0 16px;
+  color: #35597f;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  align-items: center;
+  justify-items: center;
+}
+
+.field {
+  width: min(100%, 360px);
+}
+
+.wide {
+  grid-column: 1 / -1;
+  width: min(100%, 1100px);
+}
+
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 1100px);
+  padding-top: 4px;
+}
+
+.form-error {
+  margin: 8px 2px 2px;
+  color: #a30000;
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 24, 42, 0.28);
+  backdrop-filter: blur(2px);
+}
+
+.success-modal {
+  width: min(88vw, 460px);
+  text-align: center;
+  border-top: 6px solid #1f8d4d;
+  background: linear-gradient(180deg, #f4fff8 0%, #ffffff 70%);
+  animation: success-pop 0.24s ease;
+  box-shadow: 0 20px 40px rgba(10, 40, 20, 0.25);
+}
+
+.success-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0b6a36;
+}
+
+.success-text {
+  margin: 8px 0 2px;
+  color: #204931;
+  font-weight: 500;
+}
+
+.list {
+  margin-top: 12px;
+  display: grid;
+  gap: 14px;
+}
+
+.project-card {
+  border-left: 6px solid #1976d2;
+  margin: 12px 10px;
+  padding: 8px;
+  animation: card-enter 0.36s ease both;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  border-left-color: #0f5cb4;
+  box-shadow: 0 16px 28px rgba(17, 74, 143, 0.2) !important;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
 .card-head h3 {
   margin: 0;
+  font-size: 1.14rem;
 }
 
 .status-pill {
@@ -53,20 +165,32 @@
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 700;
-  background: #e7f1ff;
-  border: 1px solid #b9d7ff;
-  color: #0e4688;
+  letter-spacing: 0.4px;
+  color: #0b3f7b;
+  background: #d3e7ff;
+  border: 1px solid #aecdff;
 }
 
 .description {
-  color: #345578;
+  margin: 10px 0;
+  color: #2e4b6c;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px 12px;
+}
+
+.meta-grid p {
+  margin: 0;
 }
 
 .card-actions {
+  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 8px;
 }
 
 .gh-icon {
@@ -80,4 +204,26 @@
 .empty-card {
   text-align: center;
   font-weight: 500;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes success-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

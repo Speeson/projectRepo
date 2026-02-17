@@ -12,6 +12,38 @@
   font-size: 0.92rem;
 }
 
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 24, 42, 0.28);
+  backdrop-filter: blur(2px);
+}
+
+.success-modal {
+  width: min(88vw, 460px);
+  text-align: center;
+  border-top: 6px solid #1f8d4d;
+  background: linear-gradient(180deg, #f4fff8 0%, #ffffff 70%);
+  animation: success-pop 0.24s ease;
+  box-shadow: 0 20px 40px rgba(10, 40, 20, 0.25);
+}
+
+.success-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0b6a36;
+}
+
+.success-text {
+  margin: 8px 0 2px;
+  color: #204931;
+  font-weight: 500;
+}
+
 .list {
   display: grid;
   gap: 12px;
@@ -66,4 +98,15 @@
 .empty-card {
   text-align: center;
   font-weight: 500;
+}
+
+@keyframes success-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

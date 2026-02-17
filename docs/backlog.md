@@ -39,12 +39,36 @@ Estados sugeridos: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE`
 - DB/Infra lead: tareas `DB-*` y conexion entorno.
 - Integrador/QA: tareas `QA-*` y soporte merge.
 
-## 4. Bloqueos y dependencias
+## 4. Reparto operativo entre 5 personas (rellenar nombres)
+
+| Persona | Nombre | Rol | Ownership principal | Archivos/zonas |
+|---|---|---|---|---|
+| P1 |  | Analista/Arquitecto + Integrador | Coordinacion tecnica y cierre de entrega | `README.md`, `docs/backlog.md`, `docs/decisiones.md`, `docs/qa_manual.md`, integracion en `backend/src/app.ts` |
+| P2 |  | DB/Infra lead | Modelo de datos y entorno | `db/schema.sql`, `db/seed.sql`, `backend/.env.example`, soporte en `backend/src/config/db.ts` |
+| P3 |  | Backend auth/security | Login, JWT y permisos | `backend/src/routes/auth.routes.ts`, `backend/src/middleware/auth.ts`, `backend/src/types/auth.ts`, `backend/src/types/express.d.ts`, `backend/src/config/env.ts` |
+| P4 |  | Backend proyectos | Flujo negocio de proyectos | `backend/src/routes/projects.routes.ts` |
+| P5 |  | Frontend lead | UI Angular y conexion con API | `frontend/src/app/**`, `frontend/src/styles.css`, `frontend/angular.json` |
+
+### Ramas recomendadas por persona
+- P1: `chore/docs-integracion`
+- P2: `feat/db-infra`
+- P3: `feat/backend-auth`
+- P4: `feat/backend-projects`
+- P5: `feat/frontend-mvp`
+
+### Orden recomendado de merge
+1. `feat/db-infra`
+2. `feat/backend-auth`
+3. `feat/backend-projects`
+4. `feat/frontend-mvp`
+5. `chore/docs-integracion`
+
+## 5. Bloqueos y dependencias
 - `BE-03` depende de `BE-01` y `BE-02`.
 - `FE-02` depende de `BE-03`.
 - `FE-04`, `FE-05`, `FE-06` dependen de endpoints backend correspondientes.
 
-## 5. Registro rapido de progreso
+## 6. Registro rapido de progreso
 - [ ] 00:00-00:30 Preparacion entorno + DB
 - [ ] 00:30-01:30 Auth backend + login frontend
 - [ ] 01:30-02:30 Endpoints proyectos + pantallas base

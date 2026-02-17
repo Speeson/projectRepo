@@ -1,64 +1,102 @@
-<mat-card class="create-card">
-  <h2>Crear proyecto</h2>
-
-  <form [formGroup]="form" class="form-grid" (ngSubmit)="createProject()">
-    <mat-form-field appearance="outline">
-      <mat-label>Titulo</mat-label>
-      <input matInput formControlName="titulo" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Ciclo</mat-label>
-      <mat-select formControlName="ciclo">
-        <mat-option value="DAM">DAM</mat-option>
-        <mat-option value="ASIR">ASIR</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Curso academico</mat-label>
-      <input matInput formControlName="curso_academico" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="wide">
-      <mat-label>Descripcion</mat-label>
-      <textarea matInput rows="3" formControlName="descripcion"></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="wide">
-      <mat-label>Tecnologias</mat-label>
-      <input matInput formControlName="tecnologias" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="wide">
-      <mat-label>Repositorio URL</mat-label>
-      <input matInput formControlName="repositorio_url" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="wide">
-      <mat-label>Demo URL (opcional)</mat-label>
-      <input matInput formControlName="demo_url" />
-    </mat-form-field>
-
-    <div class="create-actions">
-      <button mat-raised-button color="primary" type="submit" [disabled]="loading">
-        Crear borrador
-      </button>
+﻿<section class="creator">
+  <mat-card class="creator-card">
+    <div class="creator-header">
+      <div class="header-top">
+        <span class="section-badge">Alumno</span>
+        <span class="results-chip">{{ projects().length }} proyectos</span>
+      </div>
+      <h2>Mis proyectos</h2>
+      <p>Crea borradores y envialos a revision cuando esten listos.</p>
     </div>
-  </form>
 
-  <p class="page-error" *ngIf="errorMessage">{{ errorMessage }}</p>
-</mat-card>
+    <form [formGroup]="form" class="form-grid" (ngSubmit)="createProject()">
+      <mat-form-field appearance="outline" class="field">
+        <mat-label>Titulo</mat-label>
+        <input matInput formControlName="titulo" />
+      </mat-form-field>
 
-<section class="list">
-  <mat-card *ngFor="let project of projects" class="project-card">
+      <mat-form-field appearance="outline" class="field">
+        <mat-label>Ciclo</mat-label>
+        <mat-select formControlName="ciclo">
+          <mat-option value="DAM">DAM</mat-option>
+          <mat-option value="ASIR">ASIR</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="field">
+        <mat-label>Curso academico</mat-label>
+        <input matInput formControlName="curso_academico" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="wide">
+        <mat-label>Descripcion</mat-label>
+        <textarea matInput rows="3" formControlName="descripcion"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="wide">
+        <mat-label>Tecnologias</mat-label>
+        <input matInput formControlName="tecnologias" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="wide">
+        <mat-label>Repositorio URL</mat-label>
+        <input matInput formControlName="repositorio_url" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="wide">
+        <mat-label>Demo URL (opcional)</mat-label>
+        <input matInput formControlName="demo_url" />
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading() || form.invalid">
+          {{ loading() ? 'Creando...' : 'Crear borrador' }}
+        </button>
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="showMyProjects()"
+          *ngIf="!showProjects()"
+        >
+          Ver mis proyectos
+        </button>
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="hideMyProjects()"
+          *ngIf="showProjects()"
+        >
+          Ocultar mis proyectos
+        </button>
+      </div>
+    </form>
+
+    <p class="form-error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+  </mat-card>
+</section>
+
+<div class="success-overlay" *ngIf="successMessage()">
+  <mat-card class="success-modal">
+    <p class="success-title">Operacion completada</p>
+    <p class="success-text">{{ successMessage() }}</p>
+  </mat-card>
+</div>
+
+<section class="list" *ngIf="showProjects()">
+  <mat-card *ngFor="let project of projects()" class="project-card">
     <div class="card-head">
       <h3>{{ project.titulo }}</h3>
       <span class="status-pill">{{ project.estado }}</span>
     </div>
 
     <p class="description">{{ project.descripcion }}</p>
-    <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+
+    <div class="meta-grid">
+      <p><strong>Ciclo:</strong> {{ project.ciclo }}</p>
+      <p><strong>Curso:</strong> {{ project.curso_academico }}</p>
+      <p><strong>Creado:</strong> {{ project.fecha_creacion | date:'short' }}</p>
+      <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+    </div>
 
     <div class="card-actions">
       <a
@@ -98,5 +136,5 @@
     </div>
   </mat-card>
 
-  <mat-card class="empty-card" *ngIf="projects.length === 0">Aun no tienes proyectos.</mat-card>
+  <mat-card class="empty-card" *ngIf="projects().length === 0">Aun no tienes proyectos.</mat-card>
 </section>

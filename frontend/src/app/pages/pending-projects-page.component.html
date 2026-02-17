@@ -1,9 +1,15 @@
 <h2 class="page-title">Proyectos pendientes</h2>
 
-<p class="page-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+<p class="page-error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+<div class="success-overlay" *ngIf="successMessage()">
+  <mat-card class="success-modal">
+    <p class="success-title">Operacion completada</p>
+    <p class="success-text">{{ successMessage() }}</p>
+  </mat-card>
+</div>
 
 <section class="list">
-  <mat-card *ngFor="let project of projects" class="project-card">
+  <mat-card *ngFor="let project of projects()" class="project-card">
     <div class="card-head">
       <h3>{{ project.titulo }}</h3>
       <span class="status-pill">{{ project.estado }}</span>
@@ -46,5 +52,5 @@
     </div>
   </mat-card>
 
-  <mat-card class="empty-card" *ngIf="projects.length === 0">No hay proyectos pendientes.</mat-card>
+  <mat-card class="empty-card" *ngIf="projects().length === 0">No hay proyectos pendientes.</mat-card>
 </section>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { timeout } from 'rxjs';
@@ -14,8 +14,9 @@ import type { PendingProject } from '../core/models';
   styleUrl: './pending-projects-page.component.css'
 })
 export class PendingProjectsPageComponent implements OnInit {
-  projects: PendingProject[] = [];
-  errorMessage = '';
+  readonly projects = signal<PendingProject[]>([]);
+  readonly errorMessage = signal('');
+  readonly successMessage = signal('');
 
   constructor(private readonly projectService: ProjectService) {}
 
@@ -24,36 +25,47 @@ export class PendingProjectsPageComponent implements OnInit {
   }
 
   loadPending(): void {
-    this.errorMessage = '';
+    this.errorMessage.set('');
 
     this.projectService
       .getPendingProjects()
       .pipe(timeout(8000))
       .subscribe({
         next: (response) => {
-          this.projects = response.items;
+          this.projects.set(response.items);
         },
         error: () => {
-          this.projects = [];
-          this.errorMessage =
-            'No se pudo cargar pendientes. Revisa que el backend este activo e intentalo de nuevo.';
+          this.projects.set([]);
+          this.errorMessage.set(
+            'No se pudo cargar pendientes. Revisa que el backend este activo e intentalo de nuevo.'
+          );
         }
       });
   }
 
   publish(projectId: number): void {
-    this.errorMessage = '';
+    this.successMessage.set('');
+    this.errorMessage.set('');
 
     this.projectService
       .publishProject(projectId)
       .pipe(timeout(8000))
       .subscribe({
-        next: () => this.loadPending(),
+        next: () => {
+          this.setSuccessMessage('Proyecto publicado correctamente.');
+          this.loadPending();
+        },
         error: () => {
-          this.errorMessage =
-            'No se pudo publicar el proyecto. Revisa la conexion con el backend e intentalo de nuevo.';
+          this.errorMessage.set(
+            'No se pudo publicar el proyecto. Revisa la conexion con el backend e intentalo de nuevo.'
+          );
           this.loadPending();
         }
       });
+  }
+
+  private setSuccessMessage(message: string): void {
+    this.successMessage.set(message);
+    setTimeout(() => this.successMessage.set(''), 3500);
   }
 }
