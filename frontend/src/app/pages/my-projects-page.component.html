@@ -77,6 +77,9 @@
 
 <div class="success-overlay" *ngIf="successMessage()">
   <mat-card class="success-modal">
+    <button type="button" class="x-close" aria-label="Cerrar" (click)="clearSuccessMessage()">
+      ×
+    </button>
     <p class="success-title">Operacion completada</p>
     <p class="success-text">{{ successMessage() }}</p>
   </mat-card>

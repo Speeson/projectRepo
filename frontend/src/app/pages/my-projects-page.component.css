@@ -107,6 +107,7 @@
 }
 
 .success-modal {
+  position: relative;
   width: min(88vw, 460px);
   text-align: center;
   border-top: 6px solid #1f8d4d;
@@ -126,6 +127,30 @@
   margin: 8px 0 2px;
   color: #204931;
   font-weight: 500;
+}
+
+.x-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #b7dec6;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #226143;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.x-close:hover {
+  background: #f1fff6;
+}
+
+.x-close:focus-visible {
+  outline: 2px solid #86c9a3;
+  outline-offset: 2px;
 }
 
 .list {

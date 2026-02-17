@@ -159,4 +159,8 @@ export class MyProjectsPageComponent implements OnInit {
     this.successMessage.set(message);
     setTimeout(() => this.successMessage.set(''), 3500);
   }
+
+  clearSuccessMessage(): void {
+    this.successMessage.set('');
+  }
 }
