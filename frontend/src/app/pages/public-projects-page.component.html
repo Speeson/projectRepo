@@ -9,7 +9,7 @@
       <p>Filtra por ciclo, curso y descripcion para encontrar proyectos del repositorio.</p>
     </div>
 
-    <form [formGroup]="form" class="filters-grid">
+    <form [formGroup]="form" class="filters-grid" (ngSubmit)="submitFilters()">
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Ciclo</mat-label>
         <mat-select formControlName="ciclo">
@@ -21,17 +21,25 @@
 
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Curso academico</mat-label>
-        <input matInput formControlName="curso_academico" placeholder="2025-2026" />
+        <input
+          matInput
+          formControlName="curso_academico"
+          placeholder="2025-2026"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Descripcion</mat-label>
-        <input matInput formControlName="q" placeholder="Buscar por descripcion o tecnologia..." />
+        <input
+          matInput
+          formControlName="q"
+          placeholder="Buscar por descripcion o tecnologia..."
+        />
         <mat-hint align="end">Ejemplo: monitorizacion, biblioteca, docker</mat-hint>
       </mat-form-field>
 
       <div class="actions">
-        <button mat-raised-button color="primary" type="button" (click)="submitFilters()">
+        <button mat-raised-button color="primary" type="submit">
           Filtrar
         </button>
         <button mat-stroked-button type="button" (click)="clearFilters()">Limpiar</button>

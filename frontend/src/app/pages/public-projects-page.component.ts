@@ -1,23 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  catchError,
-  debounceTime,
-  finalize,
-  merge,
-  of,
-  startWith,
-  Subject,
-  switchMap,
-  timeout
-} from 'rxjs';
+import { Subscription, timeout } from 'rxjs';
 import { ProjectService } from '../core/services/project.service';
 import type { PublicProject } from '../core/models';
 
@@ -36,65 +25,70 @@ import type { PublicProject } from '../core/models';
   templateUrl: './public-projects-page.component.html',
   styleUrl: './public-projects-page.component.css'
 })
-export class PublicProjectsPageComponent implements OnInit {
+export class PublicProjectsPageComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly submit$ = new Subject<void>();
+  private readonly cdr = inject(ChangeDetectorRef);
+  private loadSubscription: Subscription | null = null;
+  private firstFilterClick = true;
 
   loading = false;
   errorMessage = '';
   projects: PublicProject[] = [];
 
-  readonly form = this.fb.group({
-    ciclo: ['' as '' | 'DAM' | 'ASIR'],
-    curso_academico: [''],
-    q: ['']
+  readonly form = this.fb.nonNullable.group({
+    ciclo: '' as '' | 'DAM' | 'ASIR',
+    curso_academico: '',
+    q: ''
   });
 
   constructor(private readonly projectService: ProjectService) {}
 
   ngOnInit(): void {
-    merge(this.form.valueChanges.pipe(debounceTime(220)), this.submit$)
-      .pipe(
-        startWith(null),
-        switchMap(() => {
-          const raw = this.form.getRawValue();
-          this.loading = true;
-          this.errorMessage = '';
+    this.load();
+  }
 
-          return this.projectService
-            .getPublicProjects({
-              ciclo: raw.ciclo ?? '',
-              curso_academico: raw.curso_academico ?? '',
-              q: raw.q ?? ''
-            })
-            .pipe(
-              timeout(8000),
-              catchError(() => {
-                this.errorMessage =
-                  'No se pudo cargar el listado. Revisa que el backend este activo e intentalo de nuevo.';
-                return of({
-                  total: 0,
-                  filters: { ciclo: null, curso_academico: null, q: null },
-                  items: [] as PublicProject[]
-                });
-              }),
-              finalize(() => {
-                this.loading = false;
-              })
-            );
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe({
-        next: (response) => {
-          this.projects = response.items;
-        }
-      });
+  ngOnDestroy(): void {
+    this.loadSubscription?.unsubscribe();
+    this.loadSubscription = null;
   }
 
   submitFilters(): void {
-    this.submit$.next();
+    this.load();
+
+    if (this.firstFilterClick) {
+      this.firstFilterClick = false;
+      setTimeout(() => this.load(), 0);
+    }
+  }
+
+  load(): void {
+    const values = this.form.getRawValue();
+
+    this.loading = true;
+    this.errorMessage = '';
+    this.loadSubscription?.unsubscribe();
+
+    this.loadSubscription = this.projectService
+      .getPublicProjects({
+        ciclo: values.ciclo,
+        curso_academico: values.curso_academico,
+        q: values.q
+      })
+      .pipe(timeout(8000))
+      .subscribe({
+        next: (response) => {
+          this.projects = response.items;
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.projects = [];
+          this.errorMessage =
+            'No se pudo cargar el listado. Revisa que el backend este activo e intentalo de nuevo.';
+          this.loading = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   clearFilters(): void {
@@ -102,7 +96,7 @@ export class PublicProjectsPageComponent implements OnInit {
       ciclo: '',
       curso_academico: '',
       q: ''
-    }, { emitEvent: false });
-    this.submit$.next();
+    });
+    this.load();
   }
 }
