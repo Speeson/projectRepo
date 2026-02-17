@@ -171,3 +171,46 @@ Frontend implementado actualmente:
 - MVP funcional completado.
 - Flujo obligatorio validado.
 - QA manual documentada en `docs/qa_manual.md`.
+
+## 13. Docker local
+Servicios definidos en `docker-compose.yml`:
+- `db` (MySQL 8)
+- `backend` (Node.js + Express)
+- `frontend` (Angular build estatico servido por Nginx)
+
+Comandos:
+1. `docker compose up --build -d`
+2. `docker compose ps`
+3. `docker compose logs -f backend`
+
+Endpoints:
+- App: `http://localhost:8080`
+- API: `http://localhost:3000/api/health`
+- MySQL: `127.0.0.1:3308` (`root` / `root`, DB `repoprojects_db`)
+
+Reinicializar base de datos en contenedor:
+1. `docker compose down -v`
+2. `docker compose up --build -d`
+
+## 14. GitHub Actions (imagenes Docker)
+Workflow incluido:
+- `.github/workflows/docker-images.yml`
+- `.github/workflows/deploy.yml`
+
+Que hace:
+1. Se ejecuta en `push` a `main` o `dev` (y manual con `workflow_dispatch`).
+2. Construye y publica imagenes de `backend` y `frontend` en GHCR.
+3. Etiquetas generadas: `sha`, nombre de rama y `latest` en la rama por defecto.
+
+Formato de imagen:
+- `ghcr.io/<owner>/<repo>/backend`
+- `ghcr.io/<owner>/<repo>/frontend`
+
+Deploy automatico en Windows (self-hosted runner):
+1. Se ejecuta en push a `main` (o manual desde Actions).
+2. El job corre en tu runner local (`runs-on: [self-hosted, Windows, X64]`).
+3. Ejecuta `docker compose up -d --build --remove-orphans` en el repositorio.
+
+Requisitos:
+- Tener el runner de GitHub Actions levantado (`run.cmd` o servicio).
+- Docker Desktop funcionando en la maquina del runner.

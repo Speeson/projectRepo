@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-local:
+    runs-on:
+      - self-hosted
+      - Windows
+      - X64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy with Docker Compose
+        shell: pwsh
+        run: |
+          docker compose up -d --build --remove-orphans
+          docker compose ps
