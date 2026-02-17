@@ -203,8 +203,13 @@ Que hace:
 3. Etiquetas generadas: `sha`, nombre de rama y `latest` en la rama por defecto.
 
 Formato de imagen:
-- `ghcr.io/<owner>/<repo>/backend`
-- `ghcr.io/<owner>/<repo>/frontend`
+- `ghcr.io/speeson/projectrepo/backend`
+- `ghcr.io/speeson/projectrepo/frontend`
+
+URLs utiles:
+- Actions: `https://github.com/Speeson/projectRepo/actions`
+- GHCR backend: `https://ghcr.io/speeson/projectrepo/backend`
+- GHCR frontend: `https://ghcr.io/speeson/projectrepo/frontend`
 
 Deploy automatico en Windows (self-hosted runner):
 1. Se ejecuta en push a `main` (o manual desde Actions).

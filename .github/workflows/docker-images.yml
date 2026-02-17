@@ -62,3 +62,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Publish Summary
+        run: |
+          echo "Published image base: ${{ env.REGISTRY }}/${{ steps.prep.outputs.repo }}/${{ matrix.name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Actions page: https://github.com/${{ github.repository }}/actions" >> "$GITHUB_STEP_SUMMARY"
