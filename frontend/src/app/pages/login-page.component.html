@@ -1,5 +1,8 @@
-﻿<mat-card class="card">
-  <h2>Iniciar sesion</h2>
+<mat-card class="card">
+  <div class="login-badge">Acceso</div>
+  <h2 class="login-title">Iniciar sesion</h2>
+  <p class="login-subtitle">Entra con tu cuenta para gestionar y publicar proyectos</p>
+  <div class="title-separator"></div>
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="form">
     <mat-form-field appearance="outline">
@@ -9,12 +12,30 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Password</mat-label>
-      <input matInput formControlName="password" type="password" />
+      <input matInput formControlName="password" [type]="showPassword() ? 'text' : 'password'" />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="togglePassword()"
+        [attr.aria-label]="showPassword() ? 'Ocultar password' : 'Mostrar password'"
+      >
+        <svg *ngIf="!showPassword()" class="eye-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 5c5.45 0 9.66 4.18 10.84 6.02a1.65 1.65 0 0 1 0 1.96C21.66 14.82 17.45 19 12 19S2.34 14.82 1.16 12.98a1.65 1.65 0 0 1 0-1.96C2.34 9.18 6.55 5 12 5Zm0 2C8 7 4.8 9.94 3.28 12 4.8 14.06 8 17 12 17s7.2-2.94 8.72-5C19.2 9.94 16 7 12 7Zm0 1.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Z"
+          ></path>
+        </svg>
+        <svg *ngIf="showPassword()" class="eye-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="m3.28 1.87 18.85 18.85-1.41 1.41-3.07-3.07A12.68 12.68 0 0 1 12 20c-5.45 0-9.66-4.18-10.84-6.02a1.65 1.65 0 0 1 0-1.96A17.8 17.8 0 0 1 7.1 6.87L1.87 1.64ZM8.67 8.28A7.73 7.73 0 0 0 3.28 12C4.8 14.06 8 17 12 17a8.71 8.71 0 0 0 4.15-1.05l-1.9-1.9a3.5 3.5 0 0 1-4.58-4.58ZM12 4c5.45 0 9.66 4.18 10.84 6.02a1.65 1.65 0 0 1 0 1.96 17.62 17.62 0 0 1-2.66 3.12l-1.42-1.42A12.15 12.15 0 0 0 20.72 12C19.2 9.94 16 7 12 7a8.56 8.56 0 0 0-1.81.19L8.53 5.53A11.04 11.04 0 0 1 12 5Z"
+          ></path>
+        </svg>
+      </button>
     </mat-form-field>
 
     <p class="error" *ngIf="error()">{{ error() }}</p>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="loading()">
+    <button mat-raised-button color="primary" class="submit-btn" type="submit" [disabled]="loading()">
       {{ loading() ? 'Entrando...' : 'Entrar' }}
     </button>
   </form>

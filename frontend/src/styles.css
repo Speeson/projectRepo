@@ -1,4 +1,15 @@
-﻿@import '@angular/material/prebuilt-themes/azure-blue.css';
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+:root {
+  --bg-top: #e9f3ff;
+  --bg-mid: #d4e8ff;
+  --bg-bottom: #f7fbff;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: #c7dcf8;
+  --title: #0f2f53;
+  --muted: #476283;
+  --shadow: 0 14px 30px rgba(10, 54, 104, 0.12);
+}
 
 html,
 body {
@@ -7,10 +18,29 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-  background: #f5f6fa;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: var(--title);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(63, 138, 255, 0.28) 0, rgba(63, 138, 255, 0) 32%),
+    radial-gradient(circle at 92% 12%, rgba(27, 112, 224, 0.2) 0, rgba(27, 112, 224, 0) 36%),
+    linear-gradient(160deg, var(--bg-top) 0%, var(--bg-mid) 42%, var(--bg-bottom) 100%);
+  background-attachment: fixed;
 }
 
 a {
-  color: #0a66c2;
+  color: #0f56ad;
+}
+
+mat-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border);
+  border-radius: 16px !important;
+  box-shadow: var(--shadow) !important;
+  margin: 10px 0;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--title);
 }

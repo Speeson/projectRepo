@@ -1,15 +1,50 @@
-﻿<h2>Proyectos pendientes</h2>
+<h2 class="page-title">Proyectos pendientes</h2>
+
+<p class="page-error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
 <section class="list">
-  <mat-card *ngFor="let project of projects">
-    <h3>{{ project.titulo }}</h3>
+  <mat-card *ngFor="let project of projects" class="project-card">
+    <div class="card-head">
+      <h3>{{ project.titulo }}</h3>
+      <span class="status-pill">{{ project.estado }}</span>
+    </div>
+
     <p><strong>Alumno:</strong> {{ project.autor }} ({{ project.autor_email }})</p>
     <p><strong>Ciclo:</strong> {{ project.ciclo }} | <strong>Curso:</strong> {{ project.curso_academico }}</p>
-    <p>{{ project.descripcion }}</p>
-    <button mat-raised-button color="primary" (click)="publish(project.id)">
-      Publicar
-    </button>
+    <p class="description">{{ project.descripcion }}</p>
+
+    <div class="card-actions">
+      <a
+        mat-stroked-button
+        color="primary"
+        [href]="project.repositorio_url"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.24.49-2.71-1.08-2.71-1.08-.37-.94-.9-1.19-.9-1.19-.73-.5.06-.49.06-.49.81.06 1.24.84 1.24.84.72 1.23 1.88.88 2.34.67.07-.52.28-.88.51-1.08-1.79-.2-3.68-.9-3.68-4a3.13 3.13 0 0 1 .83-2.17c-.08-.2-.36-1.01.08-2.1 0 0 .68-.22 2.23.83a7.71 7.71 0 0 1 4.06 0c1.55-1.05 2.23-.83 2.23-.83.44 1.09.16 1.9.08 2.1a3.12 3.12 0 0 1 .83 2.17c0 3.1-1.89 3.8-3.69 4 .29.25.54.73.54 1.47v2.18c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
+          ></path>
+        </svg>
+        Repositorio
+      </a>
+
+      <a
+        mat-flat-button
+        color="primary"
+        *ngIf="project.demo_url"
+        [href]="project.demo_url"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Demo
+      </a>
+
+      <button mat-raised-button color="primary" (click)="publish(project.id)">
+        Publicar
+      </button>
+    </div>
   </mat-card>
 
-  <mat-card *ngIf="projects.length === 0">No hay proyectos pendientes.</mat-card>
+  <mat-card class="empty-card" *ngIf="projects.length === 0">No hay proyectos pendientes.</mat-card>
 </section>

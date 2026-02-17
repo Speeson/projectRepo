@@ -26,6 +26,7 @@ export class LoginPageComponent {
   private readonly fb = inject(FormBuilder);
   readonly error = signal('');
   readonly loading = signal(false);
+  readonly showPassword = signal(false);
 
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -36,6 +37,10 @@ export class LoginPageComponent {
     private readonly authService: AuthService,
     private readonly router: Router
   ) {}
+
+  togglePassword(): void {
+    this.showPassword.set(!this.showPassword());
+  }
 
   submit(): void {
     if (this.form.invalid || this.loading()) {

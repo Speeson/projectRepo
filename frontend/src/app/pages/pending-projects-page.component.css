@@ -1,4 +1,69 @@
-﻿.list {
+.page-title {
+  margin: 0 0 14px;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #b8d3f3;
+}
+
+.page-error {
+  margin: 8px 2px 10px;
+  color: #a30000;
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.list {
   display: grid;
   gap: 12px;
+}
+
+.project-card {
+  border-left: 6px solid #0d47a1;
+  margin: 12px 10px;
+  padding: 8px;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-head h3 {
+  margin: 0;
+}
+
+.status-pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #ffefcc;
+  border: 1px solid #ffd78a;
+  color: #6b4b00;
+}
+
+.description {
+  color: #335374;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.gh-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  margin-right: 6px;
+  vertical-align: text-bottom;
+}
+
+.empty-card {
+  text-align: center;
+  font-weight: 500;
 }

@@ -1,9 +1,16 @@
-﻿<section class="filters">
-  <mat-card>
-    <h2>Proyectos publicados</h2>
+<section class="filters">
+  <mat-card class="filters-card">
+    <div class="filters-header">
+      <div class="header-top">
+        <span class="section-badge">Explorar</span>
+        <span class="results-chip">{{ projects.length + ' proyectos' }}</span>
+      </div>
+      <h2>Proyectos publicados</h2>
+      <p>Filtra por ciclo, curso y descripcion para encontrar proyectos del repositorio.</p>
+    </div>
 
-    <form [formGroup]="form" class="filters-grid" (ngSubmit)="load()">
-      <mat-form-field appearance="outline">
+    <form [formGroup]="form" class="filters-grid">
+      <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Ciclo</mat-label>
         <mat-select formControlName="ciclo">
           <mat-option value="">Todos</mat-option>
@@ -12,40 +19,75 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Curso academico</mat-label>
         <input matInput formControlName="curso_academico" placeholder="2025-2026" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Texto</mat-label>
-        <input matInput formControlName="q" placeholder="Angular, monitorizacion..." />
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Descripcion</mat-label>
+        <input matInput formControlName="q" placeholder="Buscar por descripcion o tecnologia..." />
+        <mat-hint align="end">Ejemplo: monitorizacion, biblioteca, docker</mat-hint>
       </mat-form-field>
 
       <div class="actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+        <button mat-raised-button color="primary" type="button" (click)="submitFilters()">
           Filtrar
         </button>
-        <button mat-button type="button" (click)="clearFilters()">Limpiar</button>
+        <button mat-stroked-button type="button" (click)="clearFilters()">Limpiar</button>
       </div>
     </form>
+
+    <p class="filters-error" *ngIf="errorMessage">{{ errorMessage }}</p>
   </mat-card>
 </section>
 
 <section class="list">
   <mat-card *ngFor="let project of projects" class="project-card">
-    <h3>{{ project.titulo }}</h3>
-    <p>{{ project.descripcion }}</p>
-    <p><strong>Ciclo:</strong> {{ project.ciclo }} | <strong>Curso:</strong> {{ project.curso_academico }}</p>
-    <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
-    <p><strong>Autor:</strong> {{ project.autor }}</p>
-    <p>
-      <a [href]="project.repositorio_url" target="_blank" rel="noreferrer">Repositorio</a>
-      <span *ngIf="project.demo_url"> | <a [href]="project.demo_url" target="_blank" rel="noreferrer">Demo</a></span>
-    </p>
+    <div class="card-head">
+      <h3>{{ project.titulo }}</h3>
+      <span class="status-pill">{{ project.estado }}</span>
+    </div>
+
+    <p class="description">{{ project.descripcion }}</p>
+
+    <div class="meta-grid">
+      <p><strong>Ciclo:</strong> {{ project.ciclo }}</p>
+      <p><strong>Curso:</strong> {{ project.curso_academico }}</p>
+      <p><strong>Autor:</strong> {{ project.autor }}</p>
+      <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+    </div>
+
+    <div class="card-actions">
+      <a
+        mat-stroked-button
+        color="primary"
+        [href]="project.repositorio_url"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.24.49-2.71-1.08-2.71-1.08-.37-.94-.9-1.19-.9-1.19-.73-.5.06-.49.06-.49.81.06 1.24.84 1.24.84.72 1.23 1.88.88 2.34.67.07-.52.28-.88.51-1.08-1.79-.2-3.68-.9-3.68-4a3.13 3.13 0 0 1 .83-2.17c-.08-.2-.36-1.01.08-2.1 0 0 .68-.22 2.23.83a7.71 7.71 0 0 1 4.06 0c1.55-1.05 2.23-.83 2.23-.83.44 1.09.16 1.9.08 2.1a3.12 3.12 0 0 1 .83 2.17c0 3.1-1.89 3.8-3.69 4 .29.25.54.73.54 1.47v2.18c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
+          ></path>
+        </svg>
+        Repositorio
+      </a>
+
+      <a
+        mat-flat-button
+        color="primary"
+        *ngIf="project.demo_url"
+        [href]="project.demo_url"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Demo
+      </a>
+    </div>
   </mat-card>
 
-  <mat-card *ngIf="!loading && projects.length === 0">
+  <mat-card class="empty-card" *ngIf="!loading && projects.length === 0">
     No hay proyectos con los filtros actuales.
   </mat-card>
 </section>
