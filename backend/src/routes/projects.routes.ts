@@ -88,7 +88,7 @@ projectsRouter.post(
 
     const [result] = await pool.query<ResultSetHeader>(
       `
-        INSERT INTO projects (
+        INSERT INTO proyectos (
           titulo,
           descripcion,
           ciclo,
@@ -97,7 +97,7 @@ projectsRouter.post(
           repositorio_url,
           demo_url,
           estado,
-          autor_id
+          usuario_id
         ) VALUES (?, ?, ?, ?, ?, ?, ?, 'BORRADOR', ?)
       `,
       [
@@ -127,20 +127,20 @@ projectsRouter.get(
     const [rows] = await pool.query<MyProjectRow[]>(
       `
         SELECT
-          id,
-          titulo,
-          descripcion,
-          ciclo,
-          curso_academico,
-          tecnologias,
-          repositorio_url,
-          demo_url,
-          estado,
-          fecha_creacion,
-          fecha_actualizacion
-        FROM projects
-        WHERE autor_id = ?
-        ORDER BY fecha_creacion DESC
+          p.id,
+          p.titulo,
+          p.descripcion,
+          p.ciclo,
+          p.curso_academico,
+          p.tecnologias,
+          p.repositorio_url,
+          p.demo_url,
+          p.estado,
+          p.created_at AS fecha_creacion,
+          p.created_at AS fecha_actualizacion
+        FROM proyectos p
+        WHERE p.usuario_id = ?
+        ORDER BY p.created_at DESC
       `,
       [req.user!.id]
     );
@@ -165,10 +165,10 @@ projectsRouter.patch(
 
     const [result] = await pool.query<ResultSetHeader>(
       `
-        UPDATE projects
+        UPDATE proyectos
         SET estado = 'PENDIENTE'
         WHERE id = ?
-          AND autor_id = ?
+          AND usuario_id = ?
           AND estado = 'BORRADOR'
       `,
       [projectId, req.user!.id]
@@ -202,13 +202,13 @@ projectsRouter.get(
           p.repositorio_url,
           p.demo_url,
           p.estado,
-          u.full_name AS autor,
+          u.nombre AS autor,
           u.email AS autor_email,
-          p.fecha_creacion
-        FROM projects p
-        INNER JOIN users u ON u.id = p.autor_id
+          p.created_at AS fecha_creacion
+        FROM proyectos p
+        INNER JOIN usuarios u ON u.id = p.usuario_id
         WHERE p.estado = 'PENDIENTE'
-        ORDER BY p.fecha_creacion ASC
+        ORDER BY p.created_at ASC
       `
     );
 
@@ -232,7 +232,7 @@ projectsRouter.patch(
 
     const [result] = await pool.query<ResultSetHeader>(
       `
-        UPDATE projects
+        UPDATE proyectos
         SET estado = 'PUBLICADO'
         WHERE id = ?
           AND estado = 'PENDIENTE'
@@ -297,12 +297,12 @@ projectsRouter.get("/projects/public", async (req, res) => {
         p.repositorio_url,
         p.demo_url,
         p.estado,
-        u.full_name AS autor,
-        p.fecha_creacion
-      FROM projects p
-      INNER JOIN users u ON u.id = p.autor_id
+        u.nombre AS autor,
+        p.created_at AS fecha_creacion
+      FROM proyectos p
+      INNER JOIN usuarios u ON u.id = p.usuario_id
       WHERE ${whereClause}
-      ORDER BY p.fecha_creacion DESC
+      ORDER BY p.created_at DESC
     `,
     params
   );

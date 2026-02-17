@@ -1,18 +1,16 @@
 -- Hackaton FP RepoProjects
--- seed.sql
--- Requiere ejecutar antes db/schema.sql
+-- seed.sql adaptada al schema original (usuarios/proyectos)
 
-USE fp_repoprojects;
+USE repoprojects_db;
 
--- Permite re-ejecutar la seed sin errores de duplicados
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE projects;
-TRUNCATE TABLE users;
+TRUNCATE TABLE proyectos;
+TRUNCATE TABLE usuarios;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Password de ejemplo para todos: Password123!
 -- Guardada como SHA-256 para simplificar el MVP del hackaton
-INSERT INTO users (full_name, email, password_hash, role) VALUES
+INSERT INTO usuarios (nombre, email, hash_password, rol) VALUES
   ('Ana Alumna', 'alumno@repoprojects.local', SHA2('Password123!', 256), 'ALUMNO'),
   ('Diego Docente', 'docente@repoprojects.local', SHA2('Password123!', 256), 'DOCENTE'),
   ('Ada Admin', 'admin@repoprojects.local', SHA2('Password123!', 256), 'ADMIN'),
@@ -22,8 +20,7 @@ INSERT INTO users (full_name, email, password_hash, role) VALUES
   ('admin', 'admin@example.com', SHA2('Pass123!', 256), 'ADMIN'),
   ('Ivan Admin', 'ivan@repoprojects.local', SHA2('Password123!', 256), 'ADMIN');
 
--- Proyectos de ejemplo para probar listados, filtros y flujo
-INSERT INTO projects (
+INSERT INTO proyectos (
   titulo,
   descripcion,
   ciclo,
@@ -32,7 +29,7 @@ INSERT INTO projects (
   repositorio_url,
   demo_url,
   estado,
-  autor_id
+  usuario_id
 ) VALUES
   (
     'Gestor de Biblioteca Escolar',

@@ -28,10 +28,10 @@ authRouter.post("/auth/login", async (req, res) => {
 
   const [rows] = await pool.query<LoginRow[]>(
     `
-      SELECT id, email, role
-      FROM users
+      SELECT id, email, rol AS role
+      FROM usuarios
       WHERE email = ?
-        AND password_hash = SHA2(?, 256)
+        AND hash_password = SHA2(?, 256)
       LIMIT 1
     `,
     [email, password]

@@ -45,8 +45,8 @@ Scripts disponibles:
 - `db/seed.sql`
 
 ### Tablas actuales
-- `users`
-- `projects`
+- `usuarios`
+- `proyectos`
 
 ### Roles
 - `ALUMNO`
@@ -62,6 +62,7 @@ Scripts disponibles:
 ### Carga local
 1. Ejecutar `db/schema.sql`.
 2. Ejecutar `db/seed.sql`.
+3. Verificar que el backend usa `DB_NAME=repoprojects_db`.
 
 Credenciales de prueba (seed):
 - `alumno@repoprojects.local`
