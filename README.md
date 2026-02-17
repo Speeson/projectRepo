@@ -30,6 +30,7 @@ Flujo minimo obligatorio:
 - `docs/`: backlog, decisiones y notas de equipo.
   - `docs/backlog.md`: tareas del sprint del hackaton.
   - `docs/decisiones.md`: registro de decisiones tecnicas.
+  - `docs/qa_manual.md`: checklist QA manual y evidencia E2E.
 
 ## 4. Estado actual del proyecto
 - [x] Definicion inicial del alcance MVP.
@@ -104,7 +105,7 @@ Filtros minimos del listado publico:
 - En la seed actual la password se almacena con `SHA2` para simplificar el MVP del hackaton.
 - En version posterior se migrara a `bcrypt` en backend para entorno real.
 
-## 9. Como ejecutar (work in progress)
+## 9. Como ejecutar
 ### Base de datos
 1. Crear/actualizar esquema ejecutando `db/schema.sql`.
 2. Poblar datos con `db/seed.sql`.
@@ -148,7 +149,15 @@ Frontend implementado actualmente:
 - 2026-02-16: Implementados endpoints de alumno (`POST /projects`, `GET /projects/mine`, `PATCH /projects/:id/submit`).
 - 2026-02-16: Implementados endpoints de moderacion (`GET /projects/pending`, `PATCH /projects/:id/publish`).
 - 2026-02-16: Inicializado frontend Angular + Material e integradas pantallas MVP.
+- 2026-02-16: Ejecutada QA manual E2E y cerrada documentacion final.
 
-## 11. Pendientes inmediatos
-1. Ejecutar QA manual de flujo completo por rol.
-2. Ajustar detalles visuales y mensajes de error para demo final.
+## 11. Demo rapida (checklist)
+1. Login como `ALUMNO` y crear proyecto en `BORRADOR`.
+2. Enviar proyecto a revision (`PENDIENTE`).
+3. Login como `DOCENTE` o `ADMIN` y publicar proyecto.
+4. Ir al listado publico y comprobar que aparece como `PUBLICADO`.
+
+## 12. Estado de entrega
+- MVP funcional completado.
+- Flujo obligatorio validado.
+- QA manual documentada en `docs/qa_manual.md`.

@@ -29,8 +29,8 @@ Estados sugeridos: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE`
 | FE-04 | Pantalla publico con filtros |  | DONE | Alta | Renderiza solo proyectos publicados |
 | FE-05 | Pantalla mis proyectos |  | DONE | Alta | Crear/listar/enviar a revision funciona |
 | FE-06 | Pantalla pendientes docente/admin |  | DONE | Alta | Publicar proyecto funciona |
-| QA-01 | Prueba E2E manual del flujo obligatorio |  | TODO | Alta | Flujo completo validado sin errores criticos |
-| DOC-01 | Actualizar README con comandos finales y notas |  | TODO | Media | README permite levantar proyecto desde cero |
+| QA-01 | Prueba E2E manual del flujo obligatorio |  | DONE | Alta | Flujo completo validado sin errores criticos |
+| DOC-01 | Actualizar README con comandos finales y notas |  | DONE | Media | README permite levantar proyecto desde cero |
 
 ## 3. Reparto sugerido por rol
 - Analista/Arquitecto: define contratos API y valida decisiones.
@@ -49,4 +49,4 @@ Estados sugeridos: `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE`
 - [ ] 00:30-01:30 Auth backend + login frontend
 - [ ] 01:30-02:30 Endpoints proyectos + pantallas base
 - [ ] 02:30-03:30 Integracion + roles + filtros
-- [ ] 03:30-04:00 QA + README + demo
+- [x] 03:30-04:00 QA + README + demo
